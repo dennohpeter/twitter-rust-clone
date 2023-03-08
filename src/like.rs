@@ -40,8 +40,8 @@ impl Like {
     }
 }
 
-#[table_name = "likes"]
 #[derive(Queryable, Insertable)]
+#[diesel(table_name = likes)]
 pub struct LikeDB {
     pub id: Uuid,
     pub created_at: NaiveDateTime,
@@ -128,7 +128,7 @@ pub async fn list(path: Path<(String,)>, pool: Data<DBPool>) -> HttpResponse {
 
         _ => HttpResponse::Ok()
             .content_type(APPLICATION_JSON)
-            .json(Likes::new()),
+            .json(Like::new()),
     }
 }
 

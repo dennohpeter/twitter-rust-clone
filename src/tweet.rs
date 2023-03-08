@@ -53,8 +53,8 @@ impl Tweet {
     }
 }
 
-#[table_name = "tweets"]
 #[derive(Queryable, Insertable)]
+#[diesel(table_name = tweets)]
 pub struct TweetDB {
     pub id: Uuid,
     pub created_at: NaiveDateTime,
@@ -154,7 +154,7 @@ pub async fn list(pool: Data<DBPool>) -> HttpResponse {
             .results
             .iter_mut()
             .map(|t| {
-                let _likes = list_likes(Uuid::from_str(t.id.as_str()).unwrap(), &conn).unwrap();
+                let _likes = list_likes(Uuid::from_str(t.id.as_str()).unwrap(), &mut conn).unwrap();
             })
             .collect::<Vec<Tweet>>(),
     };
